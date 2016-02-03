@@ -1,0 +1,29 @@
+# OS X
+.DS_Store
+
+# Compiled source
+*.py[co]
+
+# Project
+backups/
+local_settings.py
+logs/
+public/
+pyenv/
+run/
+temp/
+db.sqlite3
+
+
+# Node
+node_modules/
+
+# iPython
+*.ipynb
+
+# Foreman
+.env
+Procfile
+
+# Idea
+.idea
