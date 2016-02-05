@@ -5,7 +5,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from django.contrib import admin
 
-from .models import Author, Publisher, Category, Book, Review
+from .models import Book, Review, Author, Publisher, Category, Order, OrderStatus, OrderBook
+
+
+@admin.register(Book)
+class BookAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(Author)
@@ -23,11 +28,27 @@ class CategoryAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Book)
-class BookAdmin(admin.ModelAdmin):
-    pass
-
-
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     pass
+
+
+class OrderStatusInline(admin.StackedInline):
+
+    model = OrderStatus
+    extra = 1
+
+
+class OrderBookInline(admin.StackedInline):
+
+    model = OrderBook
+    extra = 0
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+
+    inlines = [
+        OrderStatusInline,
+        OrderBookInline
+    ]

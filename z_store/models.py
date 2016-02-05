@@ -9,9 +9,6 @@ from django.contrib.auth.models import User
 
 # TODO: Choose real books and make fixtures
 # TODO: Add verbose_name and help_text to all models
-# TODO: Add ISBN validator for Book model
-# TODO: Add simple QueryManager for Book model
-# TODO: Add Cart and Order???
 
 
 class Author(models.Model):
@@ -49,6 +46,9 @@ class Category(models.Model):
 
 
 class Book(models.Model):
+
+    # TODO: Add simple QueryManager
+    # TODO: Add simple ISBN validator
 
     LANGUAGE_CHOICES = [
         ['english', 'Английский'],
@@ -138,5 +138,110 @@ class Review(models.Model):
     text = models.TextField()
     created_time = models.DateTimeField(
         auto_now_add=True,
+        db_index=True
+    )
+
+
+class Order(models.Model):
+
+    # TODO: Validate phone and address
+    # TODO: Explain through arg
+
+    user = models.ForeignKey(
+        to=User,
+        null=True,
+        blank=True,
+        related_name='orders'
+    )
+    books = models.ManyToManyField(
+        to=Book,
+        through='OrderBook'
+    )
+    phone = models.CharField(
+        max_length=32,
+        db_index=True
+    )
+    address = models.TextField()
+    comment_by_customer = models.TextField(
+        blank=True
+    )
+    comment_by_store = models.TextField(
+        blank=True
+    )
+    created_time = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True
+    )
+    updated_time = models.DateTimeField(
+        auto_now=True,
+        db_index=True
+    )
+
+
+class OrderStatus(models.Model):
+
+    # TODO: Validate status on change. Eg "confirmed" can't go after "shipped" or "delivered"
+
+    STATUS_CHOICES = [
+        ['placed', 'Заказ сформирован'],
+        ['confirmed', 'Заказ подтвержден'],
+        ['shipped', 'Заказ отгружен'],
+        ['delivered', 'Заказ доставлен'],
+        ['canceled_by_customer', 'Заказ отменен Клиентом'],
+        ['canceled_by_store', 'Заказ отменен Магазином']
+    ]
+
+    order = models.ForeignKey(
+        to=Order,
+        related_name='statuses'
+    )
+    status = models.CharField(
+        max_length=32,
+        choices=STATUS_CHOICES,
+        db_index=True
+    )
+    comment = models.TextField(
+        blank=True
+    )
+    created_time = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True
+    )
+    updated_time = models.DateTimeField(
+        auto_now=True,
+        db_index=True
+    )
+
+    class Meta:
+        unique_together = ['order', 'status']
+
+
+class OrderBook(models.Model):
+
+    order = models.ForeignKey(
+        to=Order
+    )
+    book = models.ForeignKey(
+        to=Book
+    )
+    book_price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        db_index=True
+    )
+    book_discount = models.PositiveIntegerField(
+        default=0,
+        db_index=True
+    )
+    book_qty = models.PositiveIntegerField(
+        default=1,
+        db_index=True
+    )
+    created_time = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True
+    )
+    updated_time = models.DateTimeField(
+        auto_now=True,
         db_index=True
     )
