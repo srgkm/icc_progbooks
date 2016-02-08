@@ -65,6 +65,10 @@ class Book(models.Model):
         decimal_places=2,
         db_index=True
     )
+    discount = models.PositiveIntegerField(
+        default=0,
+        db_index=True
+    )
     qty_in_stock = models.PositiveIntegerField(
         default=0,
         db_index=True
@@ -87,9 +91,23 @@ class Book(models.Model):
         choices=LANGUAGE_CHOICES,
         db_index=True
     )
+    published_date = models.DateField(
+        db_index=True
+    )
     num_of_pages = models.IntegerField()
+    isbn = models.PositiveIntegerField(
+        db_index=True
+    )
+    is_public = models.BooleanField(
+        default=False,
+        db_index=True
+    )
     created_time = models.DateTimeField(
         auto_now_add=True,
+        db_index=True
+    )
+    updated_time = models.DateTimeField(
+        auto_now=True,
         db_index=True
     )
 
@@ -154,6 +172,10 @@ class Order(models.Model):
         auto_now_add=True,
         db_index=True
     )
+    updated_time = models.DateTimeField(
+        auto_now=True,
+        db_index=True
+    )
 
 
 class OrderStatus(models.Model):
@@ -205,6 +227,10 @@ class OrderBook(models.Model):
     book_price = models.DecimalField(
         max_digits=8,
         decimal_places=2,
+        db_index=True
+    )
+    book_discount = models.PositiveIntegerField(
+        default=0,
         db_index=True
     )
     book_qty = models.PositiveIntegerField(
