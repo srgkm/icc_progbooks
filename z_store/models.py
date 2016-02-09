@@ -23,7 +23,7 @@ class Author(models.Model):
         verbose_name = 'Автор'
         verbose_name_plural = 'Авторы'
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -39,7 +39,7 @@ class Publisher(models.Model):
         verbose_name = 'Издатель'
         verbose_name_plural = 'Издатели'
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -55,7 +55,7 @@ class Category(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -143,7 +143,7 @@ class Book(models.Model):
         verbose_name = 'Книга'
         verbose_name_plural = 'Книги'
 
-    def __str__(self):
+    def __unicode__(self):
         return self.title
 
 
@@ -189,7 +189,7 @@ class Review(models.Model):
         verbose_name = 'Обзор'
         verbose_name_plural = 'Обзоры'
 
-    def __str__(self):
+    def __unicode__(self):
         return self.book.title
 
 
@@ -270,7 +270,7 @@ class Order(models.Model):
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
 
-    def __str__(self):
+    def __unicode__(self):
         return '%s: %s' % (self.status, self.id)
 
 
