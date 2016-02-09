@@ -15,7 +15,8 @@ class Author(models.Model):
 
     name = models.CharField(
         max_length=255,
-        db_index=True
+        db_index=True,
+        verbose_name='ФИО'
     )
 
     class Meta:
@@ -30,7 +31,8 @@ class Publisher(models.Model):
 
     name = models.CharField(
         max_length=255,
-        db_index=True
+        db_index=True,
+        verbose_name='Название'
     )
 
     class Meta:
@@ -43,19 +45,10 @@ class Publisher(models.Model):
 
 class Category(models.Model):
 
-    TYPE_CHOICES = [
-        ['experience_level', 'Уровень подготовки'],
-        ['programming_language', 'Язык программирования']
-    ]
-
-    type = models.CharField(
-        max_length=32,
-        choices=TYPE_CHOICES,
-        db_index=True
-    )
     name = models.CharField(
         max_length=255,
-        db_index=True
+        db_index=True,
+        verbose_name='Назание'
     )
 
     class Meta:
@@ -63,7 +56,7 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
     def __str__(self):
-        return '%s / %s' % (self.type, self.name)
+        return self.name
 
 
 class Book(models.Model):
@@ -72,8 +65,8 @@ class Book(models.Model):
     # TODO: Add simple ISBN validator
 
     LANGUAGE_CHOICES = [
-        ['english', 'Английский'],
-        ['russian', 'Русский']
+        ['en', 'Английский'],
+        ['ru', 'Русский']
     ]
 
     title = models.CharField(
@@ -105,10 +98,10 @@ class Book(models.Model):
         related_name='books',
         verbose_name='Авторы'
     )
-    publishers = models.ManyToManyField(
+    publisher = models.ForeignKey(
         to=Publisher,
         related_name='books',
-        verbose_name='Издатели'
+        verbose_name='Издатель'
     )
     categories = models.ManyToManyField(
         to=Category,
@@ -119,7 +112,7 @@ class Book(models.Model):
         verbose_name='Описание'
     )
     language = models.CharField(
-        max_length=32,
+        max_length=2,
         choices=LANGUAGE_CHOICES,
         db_index=True,
         verbose_name='Язык'
